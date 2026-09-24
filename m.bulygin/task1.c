@@ -47,12 +47,12 @@ void print_limit()
 {
     struct rlimit limit;
 
-    if (getrlimit(RLIMIT_FSIZE, &limit) == 0)
+    if (getrlimit(RLIMIT_NPROC, &limit) == 0)
     {
         if (limit.rlim_cur == RLIM_INFINITY)
-            printf("Limit: unlimited\n");
+            printf("Process limit: unlimited\n");
         else
-            printf("Limit: %ld bytes\n", limit.rlim_cur);
+            printf("Process limit: %ld\n", limit.rlim_cur);
     }
     else
     {
@@ -68,8 +68,8 @@ void change_limit(char *value)
     limit.rlim_cur = atol(value);
     limit.rlim_max = atol(value);
 
-    if (setrlimit(RLIMIT_FSIZE, &limit) == 0)
-        printf("Limit changed to %s\n", value);
+    if (setrlimit(RLIMIT_NPROC, &limit) == 0)
+        printf("Process limit changed to %s\n", value);
     else
         perror("setrlimit");
 }
