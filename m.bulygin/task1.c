@@ -50,7 +50,7 @@ void print_limit()
         return;
     }
 
-    printf("File size limit: %ld\n", lim.rlim_cur);
+    printf("File size limit: Unlimited");
 }
 
 
