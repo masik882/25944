@@ -47,7 +47,7 @@ void print_limit()
 {
     struct rlimit limit;
 
-    if (getrlimit(RLIMIT_NPROC, &limit) == 0)
+    if (getrlimit(RLIMIT_CPU, &limit) == 0)
     {
         if (limit.rlim_cur == RLIM_INFINITY)
             printf("Process limit: unlimited\n");
@@ -68,7 +68,7 @@ void change_limit(char *value)
     limit.rlim_cur = atol(value);
     limit.rlim_max = atol(value);
 
-    if (setrlimit(RLIMIT_NPROC, &limit) == 0)
+    if (setrlimit(RLIMIT_CPU, &limit) == 0)
         printf("Process limit changed to %s\n", value);
     else
         perror("setrlimit");
