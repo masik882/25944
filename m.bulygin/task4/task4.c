@@ -10,6 +10,57 @@ struct Node
     struct Node *next;
 };
 
+void remove_escape_sequences(char *str)
+{
+    int read_pos = 0;
+    int write_pos = 0;
+
+    while (str[read_pos] != '\0')
+    {
+        if ((unsigned char)str[read_pos] == 27)
+        {
+            if (str[read_pos + 1] == '[')
+            {
+                if (str[read_pos + 2] == 'A' ||
+                    str[read_pos + 2] == 'B' ||
+                    str[read_pos + 2] == 'C' ||
+                    str[read_pos + 2] == 'D')
+                {
+                    read_pos += 3;
+                    continue;
+                }
+
+                read_pos += 2;
+                continue;
+            }
+
+            if (str[read_pos + 1] == 'O')
+            {
+                if (str[read_pos + 2] == 'A' ||
+                    str[read_pos + 2] == 'B' ||
+                    str[read_pos + 2] == 'C' ||
+                    str[read_pos + 2] == 'D')
+                {
+                    read_pos += 3;
+                    continue;
+                }
+
+                read_pos += 2;
+                continue;
+            }
+
+            read_pos++;
+            continue;
+        }
+
+        str[write_pos] = str[read_pos];
+        write_pos++;
+        read_pos++;
+    }
+
+    str[write_pos] = '\0';
+}
+
 int main()
 {
     char buffer[BUFFER_SIZE];
@@ -25,12 +76,19 @@ int main()
 
     while (fgets(buffer, BUFFER_SIZE, stdin) != NULL)
     {
+        remove_escape_sequences(buffer);
+
         if (buffer[0] == '.')
         {
             break;
         }
 
         len = strlen(buffer);
+
+        if (len == 0 || (len == 1 && buffer[0] == '\n'))
+        {
+            continue;
+        }
 
         new_node = malloc(sizeof(struct Node));
 
